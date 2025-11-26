@@ -1,0 +1,37 @@
+# Hugo build output
+/public/
+/resources/_gen/
+/assets/jsconfig.json
+
+# Hugo cache
+/.hugo_build.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Node (if using npm for tooling)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Claude Code
+.claude/
