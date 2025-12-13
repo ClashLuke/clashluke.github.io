@@ -1,0 +1,31 @@
+baseURL = "https://convergentthinking.sh/"
+languageCode = "en-us"
+title = "Convergent Thinking"
+
+[params]
+  description = "Exploring machine learning, optimization, and neural architectures"
+  author = "Lucas Nestler"
+  twitter = "clashluke"
+  github = "clashluke"
+  website = "https://nestler.sh/"
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[permalinks]
+  posts = "/posts/:slug/"
+
+[[menu.main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "Posts"
+  url = "/posts/"
+  weight = 2
+
+[[menu.main]]
+  name = "About"
+  url = "/about/"
+  weight = 3

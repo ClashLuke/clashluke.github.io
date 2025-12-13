@@ -1,0 +1,8 @@
+<footer class="site-footer">
+  <p>&copy; {{ now.Year }} {{ .Site.Params.author }}</p>
+  <p class="footer-links">
+    {{- with .Site.Params.twitter }}<a href="https://x.com/{{ . }}">Twitter</a>{{ end }}
+    {{- with .Site.Params.github }} · <a href="https://github.com/{{ . }}">GitHub</a>{{ end }}
+    {{- with .Site.Params.website }} · <a href="{{ . }}">Website</a>{{ end }}
+  </p>
+</footer>

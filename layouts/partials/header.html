@@ -1,0 +1,10 @@
+<header class="site-header">
+  <nav>
+    <a href="{{ "/" | relURL }}" class="site-title">{{ .Site.Title }}</a>
+    <ul class="nav-links">
+      {{- range .Site.Menus.main }}
+      <li><a href="{{ .URL | relURL }}"{{ if $.IsMenuCurrent "main" . }} class="active"{{ end }}>{{ .Name }}</a></li>
+      {{- end }}
+    </ul>
+  </nav>
+</header>
