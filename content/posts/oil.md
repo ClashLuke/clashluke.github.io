@@ -1,7 +1,7 @@
 +++
 title = "People are the new oil"
 date = 2025-12-13
-draft = true
+draft = false
 description = "Compute used to be the bottleneck. Now it's people."
 tags = []
 +++

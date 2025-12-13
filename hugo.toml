@@ -3,7 +3,7 @@ languageCode = "en-us"
 title = "Convergent Thinking"
 
 [params]
-  description = "Exploring machine learning, optimization, and neural architectures"
+  description = "I adjust numbers until other numbers get smaller."
   author = "Lucas Nestler"
   twitter = "clashluke"
   github = "clashluke"
