@@ -19,7 +19,7 @@ jobs:
         with:
           hugo-version: latest
       - uses: actions/configure-pages@v5
-      - run: hugo --minify
+      - run: hugo --minify --baseURL "https://clashluke.github.io/"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
