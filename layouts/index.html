@@ -2,12 +2,15 @@
 <section class="home">
   <p class="tagline">{{ .Site.Params.description }}</p>
 
-  <h2>Recent Posts</h2>
+  <h2>Recent</h2>
   <ul class="post-list">
     {{- range first 10 (where .Site.RegularPages "Section" "posts") }}
     <li>
       <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+      <div class="post-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+        <span class="reading-time">{{ math.Round (div (countwords .Content) 200.0) }} min read</span>
+      </div>
       {{- with .Description }}
       <p class="post-desc">{{ . }}</p>
       {{- end }}

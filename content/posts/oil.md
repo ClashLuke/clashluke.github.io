@@ -6,8 +6,6 @@ description = "Compute used to be the bottleneck. Now it's people."
 tags = []
 +++
 
-# People are the new oil
-
 When people say "X is the new oil," they mean the bottleneck. The resource everyone needs and no one has enough of.
 
 For AI, that used to be compute. It isn't anymore.
