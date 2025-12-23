@@ -12,6 +12,12 @@ title = "Convergent Thinking"
 [markup.goldmark.renderer]
   unsafe = true
 
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [['$$', '$$']]
+    inline = [['$', '$']]
+
 [permalinks]
   posts = "/posts/:slug/"
 

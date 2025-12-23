@@ -679,3 +679,21 @@ em {
   body { box-shadow: none; border: none; margin: 0; padding: 0; }
   html { background: white; }
 }
+
+/* MathJax styling */
+mjx-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  margin: 1.5rem 0;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  mjx-container[jax="SVG"][display="true"] {
+    font-size: 0.9em;
+  }
+}
