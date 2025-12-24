@@ -33,11 +33,12 @@ holds for gradients.
 
 ## The Evidence
 
-I trained two identical models on a toy task: given a target token at position 0, predict its cumulative count at each
-subsequent position. One used L1 softmax (p=1), one used L2 (p=2). Training used lengths 32 to 512. Evaluation
-additionally tested 1024 and 2048, lengths never seen during training.
+Two identical models, differing only in softmax norm, trained to count occurrences of a target token. Training uses
+staged sequence length (up to 2048), evaluation up to 32768.
 
-![Length generalization](length_generalization.png)
+![Length generalization](val_loss_by_position.png)
+
+L1 collapses beyond the current training length, while L2 generalizes up and down.
 
 ## The Fix
 
