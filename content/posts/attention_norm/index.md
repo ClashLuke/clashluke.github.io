@@ -6,7 +6,7 @@ description = "Softmax constrains the L1 norm to 1, but should constrain the L2 
 tags = []
 +++
 
-We treat attention as a solved primitive. You can fuse kernels, tile memory access, quantize weights—but the formula
+We treat attention as a solved primitive. You can fuse kernels, tile memory access, quantize weights, but the formula
 itself is finished.
 
 It isn't.
@@ -39,9 +39,6 @@ additionally tested 1024 and 2048, lengths never seen during training.
 
 ![Length generalization](length_generalization.png)
 
-At trained lengths, both models reach high accuracy. At unseen lengths, L1 collapses immediately. L2 degrades but
-continues learning.
-
 ## The Fix
 
 **p-softmax** generalizes softmax by normalizing to different Lp norms:
@@ -67,6 +64,4 @@ L2 normalization adapts automatically.
 
 ---
 
-Attention normalizes the wrong norm. The derivation is five lines. The fix is one line.
-
-Code: https://github.com/ClashLuke/clashluke.github.io/tree/main/content/posts/attention_norm
+Code: https://github.com/ClashLuke/clashluke.github.io/tree/main/content/posts/attention_norm/code
