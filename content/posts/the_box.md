@@ -1,6 +1,6 @@
 +++
 title = "The Box"
-date = 2025-12-13
+date = 2026-01-01
 draft = false
 description = "What happens when you revisit the assumptions everyone forgot were assumptions?"
 tags = []
