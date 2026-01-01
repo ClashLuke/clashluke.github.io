@@ -1,6 +1,6 @@
 +++
 title = "The Box"
-date = 2025-01-01
+date = 2026-01-01
 draft = false
 description = "The hardest box to escape is the one you cannot see."
 tags = []
