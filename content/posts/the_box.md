@@ -1,17 +1,21 @@
 +++
 title = "The Box"
-date = 2025-12-31
+date = 2025-01-01
 draft = false
-description = "What happens when you revisit the assumptions everyone forgot were assumptions?"
+description = "The hardest box to escape is the one you cannot see."
 tags = []
 +++
 
-What happens when you revisit the assumptions everyone forgot were assumptions?
+The hardest box to escape is the one you cannot see.
 
-Language models predict the next token because token-level loss is tractable, not because token-level prediction captures what we want models to learn. Transformers use fixed context windows because attention is quadratic in sequence length, not because 128k tokens is enough context. We train on dense rewards because sparse rewards are hard to optimize, not because the problems we care about have dense rewards. These choices accumulate into a box that everyone works inside, and after enough time, people forget the box is there at all.
+For years, the entire field optimized next-token prediction. Lower perplexity meant a better model. This was the metric, the target, and the definition of progress. Then o1 trained for reasoning instead of prediction, and it turned out to be better at the things we actually cared about.
 
-I spent almost three years at [Keen Technologies](https://keenagi.com/) working on AGI. I left because I kept being drawn to a different question. The question of what happens when you revisit these assumptions.
+The box was only visible once someone stepped outside.
 
-What happens when agents share knowledge instead of each learning from scratch? What happens when training objectives match test objectives even for sparse rewards? What happens when you remove the assumptions that force local optimization and find structures that permit global coherence?
+Constraints never announce themselves. They look like the way things are done, and because everyone works within them, there is no contrast to make them visible. Token prediction looked like the objective. Fixed context looked like a hardware limitation. Dense rewards looked like a training requirement. From inside, every wall looks like the edge of the world.
 
-What happens when you step outside the box?
+The field moves when someone breaks through a wall.
+
+Before o1, reasoning as a training objective was not on the map. Within months of its release, every major lab reproduced it. The path had always existed, but someone had to walk it first.
+
+Benchmarks cannot answer what else is possible because they were built inside the current box. The important problems are often invisible for the same reason. The box shapes what registers as a problem at all.
