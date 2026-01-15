@@ -51,16 +51,16 @@ A per-head normalization achieves what L2 softmax aimed to achieve: constant var
 pattern and context. If this holds, per-head RMSNorm should perform similarly to per-head LayerNorm. However,
 global normalization should underperform per-head variants, as one head's attention pattern affects another's scale.
 
-To test this, the same pretrained L1 checkpoint is finetuned with different normalizations.
+To test this, the same pretrained L1 checkpoint is finetuned with different normalizations:
 
 ![norm_comparison.png](norm_comparison.png)
 
 In practice, per-head RMSNorm and per-head LayerNorm are indistinguishable (both 5.4 at 65K), while global LayerNorm has
 no advantage over unnormalized attention.
 
-Removing position embeddings tests whether variance is the bottleneck. Without PE, unnormalized attention collapses
-at long context while per-head LayerNorm stays close to the baseline with PE. The causal mask implicitly encodes
-position; normalization reveals it.
+Removing position embeddings tests whether variance is the bottleneck.\
+Without PE, unnormalized attention collapses at long context while per-head LayerNorm stays close to the baseline with
+PE. So, the causal mask implicitly encodes position, but normalization reveals it.
 
 ![nope.png](nope.png)
 
