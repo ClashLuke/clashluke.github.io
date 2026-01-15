@@ -37,3 +37,7 @@ npm-debug.log*
 
 # Claude Code
 .claude/
+
+experiment_logs/
+results/
+__pycache__/
