@@ -28,15 +28,8 @@ domains. They went down as hacks that help early convergence, not as methods tha
 
 If your method doesn't work across existing domains, it won't work for the next one either.
 
-This pattern recurs outside ML. Local optimization is comfortable. Global optimization requires you to hold something in
-mind that isn't directly in front of you.
-
 Taking a new job optimizes for local reward. Salary, status, interesting problems. But each job reshapes you. You adopt
 its values, its rhythms, its definitions of success. A few years in, you realize you've been optimized by the job more
-than you've optimized your career. You won each decision and lost the trajectory.
+than you've optimized your career. 
 
-The problem in front of you is always more vivid than the trajectory you can't see. The benchmark in front of you is
-always more measurable than the domains you haven't tested on. This is the asymmetry. Local optimization serves whatever
-shows up.
-
-If it doesn't transfer, it doesn't work.
+You won each decision and lost the trajectory.
