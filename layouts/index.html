@@ -10,6 +10,7 @@
       <div class="post-meta">
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
         <span class="reading-time">{{ math.Round (div (countwords .Content) 200.0) }} min read</span>
+        <a href="{{ .RelPermalink }}index.md" class="source-link">[md]</a>
       </div>
       {{- with .Description }}
       <p class="post-desc">{{ . }}</p>

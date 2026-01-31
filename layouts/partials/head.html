@@ -7,6 +7,9 @@
 {{ with .OutputFormats.Get "RSS" }}
 <link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .Permalink }}">
 {{ end }}
+{{ with .OutputFormats.Get "Markdown" }}
+<link rel="alternate" type="text/markdown" href="{{ .Permalink }}" title="Markdown source">
+{{ end }}
 
 <!-- MathJax for LaTeX rendering -->
 <script>

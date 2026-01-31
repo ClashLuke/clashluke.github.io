@@ -35,3 +35,12 @@ title = "Convergent Thinking"
   name = "About"
   url = "/about/"
   weight = 3
+
+[outputFormats.Markdown]
+  mediaType = "text/markdown"
+  baseName = "index"
+  suffix = "md"
+  isPlainText = true
+
+[outputs]
+  page = ["HTML", "Markdown"]

@@ -681,6 +681,24 @@ em {
   html { background: white; }
 }
 
+/* Source link */
+.source-link {
+  font-size: 0.8em;
+  opacity: 0.7;
+  text-decoration: none;
+  margin-left: 0.5rem;
+}
+
+.source-link:hover {
+  opacity: 1;
+}
+
+.post header .source-link {
+  display: block;
+  margin: 0.75rem auto 0;
+  text-align: center;
+}
+
 /* MathJax styling */
 mjx-container {
   overflow-x: auto;
