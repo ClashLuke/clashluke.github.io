@@ -7,6 +7,7 @@
     <li>
       <a href="{{ .RelPermalink }}">{{ .Title }}</a>
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+      <a href="{{ .RelPermalink }}index.md" class="source-link">[md]</a>
       {{- with .Description }}
       <p class="post-desc">{{ . }}</p>
       {{- end }}
