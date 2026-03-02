@@ -22,13 +22,13 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build Optimizer Playground
-        run: |
-          cd optimizer
-          npm install
-          npx vite build --base=/optimizer/
-          cd ..
-          cp -r optimizer/dist static/optimizer
+#      - name: Build Optimizer Playground
+#        run: |
+#          cd optimizer
+#          npm install
+#          npx vite build --base=/optimizer/
+#          cd ..
+#          cp -r optimizer/dist static/optimizer
 
       - name: Build
         run: hugo --minify
