@@ -17,6 +17,19 @@ jobs:
         with:
           hugo-version: latest
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build Optimizer Playground
+        run: |
+          cd optimizer
+          npm install
+          npx vite build --base=/optimizer/
+          cd ..
+          cp -r optimizer/dist static/optimizer
+
       - name: Build
         run: hugo --minify
 

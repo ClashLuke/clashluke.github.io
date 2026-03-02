@@ -4,6 +4,7 @@ date = 2025-12-23
 draft = false
 description = "Softmax constrains the L1 norm to 1, but should constrain the L2 norm."
 tags = []
+math = true
 +++
 
 We treat attention as a solved primitive. You can fuse kernels, tile memory access, quantize weights, but the formula

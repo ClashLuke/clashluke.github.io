@@ -1,9 +1,65 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+{{- $description := .Description | default .Site.Params.description -}}
+<meta name="description" content="{{ $description }}">
+<meta name="author" content="{{ .Site.Params.author }}">
 <link rel="stylesheet" href="{{ "/css/style.css" | relURL }}">
 <link rel="canonical" href="{{ .Permalink }}">
+
+<!-- Favicon -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-48x48.png" sizes="48x48" type="image/png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c1a17" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+
+<!-- Open Graph -->
+{{- $ogTitle := cond .IsHome .Site.Title .Title -}}
+{{- $ogImage := "" -}}
+{{- if .IsPage -}}
+  {{- $heroNames := slice "hero" "cover" "featured" -}}
+  {{- range $heroNames -}}
+    {{- with $.Resources.GetMatch (printf "%s*" .) -}}
+      {{- $ogImage = .Permalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with .Params.image -}}
+  {{- $ogImage = . | absURL -}}
+{{- end -}}
+<meta property="og:title" content="{{ $ogTitle }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:type" content="{{ cond .IsPage "article" "website" }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:locale" content="en_US">
+{{- with $ogImage }}
+<meta property="og:image" content="{{ . }}">
+{{- end }}
+{{- if .IsPage }}
+{{- if not .Date.IsZero }}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+{{- end }}
+<meta property="article:author" content="{{ $.Site.Params.author }}">
+{{- range .Params.tags }}
+<meta property="article:tag" content="{{ . }}">
+{{- end }}
+{{- end }}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="{{ cond (ne $ogImage "") "summary_large_image" "summary" }}">
+<meta name="twitter:site" content="@{{ .Site.Params.twitter }}">
+<meta name="twitter:creator" content="@{{ .Site.Params.twitter }}">
+<meta name="twitter:title" content="{{ $ogTitle }}">
+<meta name="twitter:description" content="{{ $description }}">
+{{- with $ogImage }}
+<meta name="twitter:image" content="{{ . }}">
+{{- end }}
+
 {{ with .OutputFormats.Get "RSS" }}
 <link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .Permalink }}">
 {{ end }}
@@ -11,6 +67,50 @@
 <link rel="alternate" type="text/markdown" href="{{ .Permalink }}" title="Markdown source">
 {{ end }}
 
+<!-- Structured Data -->
+{{- if .IsHome }}
+{{- $schema := dict
+  "@context" "https://schema.org"
+  "@type" "WebSite"
+  "name" .Site.Title
+  "description" .Site.Params.description
+  "url" .Site.BaseURL
+  "author" (dict "@type" "Person" "name" .Site.Params.author "url" .Site.Params.website)
+-}}
+<script type="application/ld+json">{{ $schema | jsonify | safeJS }}</script>
+{{- else if .IsPage }}
+{{- $author := dict "@type" "Person" "name" .Site.Params.author "url" .Site.Params.website -}}
+{{- $schema := dict
+  "@context" "https://schema.org"
+  "@type" "BlogPosting"
+  "headline" .Title
+  "description" $description
+  "url" .Permalink
+  "author" $author
+  "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+-}}
+{{- if not .Date.IsZero -}}
+  {{- $schema = merge $schema (dict "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")) -}}
+{{- end -}}
+{{- with .Params.tags -}}
+  {{- $schema = merge $schema (dict "keywords" .) -}}
+{{- end -}}
+{{- with $ogImage -}}
+  {{- $schema = merge $schema (dict "image" .) -}}
+{{- end -}}
+{{- $breadcrumb := dict
+  "@context" "https://schema.org"
+  "@type" "BreadcrumbList"
+  "itemListElement" (slice
+    (dict "@type" "ListItem" "position" 1 "name" "Home" "item" $.Site.BaseURL)
+    (dict "@type" "ListItem" "position" 2 "name" .Title)
+  )
+-}}
+<script type="application/ld+json">{{ $schema | jsonify | safeJS }}</script>
+<script type="application/ld+json">{{ $breadcrumb | jsonify | safeJS }}</script>
+{{- end }}
+
+{{- if .Params.math }}
 <!-- MathJax for LaTeX rendering -->
 <script>
 MathJax = {
@@ -24,3 +124,10 @@ MathJax = {
 };
 </script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+{{- end }}
+
+<script async src="https://plausible.io/js/pa-EcP3MIW_064hjLFoPqxOI.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>

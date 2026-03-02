@@ -18,6 +18,9 @@ title = "Convergent Thinking"
     block = [['$$', '$$']]
     inline = [['$', '$']]
 
+[taxonomies]
+  tag = "tags"
+
 [permalinks]
   posts = "/posts/:slug/"
 

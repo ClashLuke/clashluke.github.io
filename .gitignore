@@ -41,3 +41,5 @@ npm-debug.log*
 experiment_logs/
 results/
 __pycache__/
+
+optimizer/dist/
