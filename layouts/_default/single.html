@@ -2,17 +2,17 @@
 <article class="post">
   <header>
     <h1>{{ .Title }}</h1>
-    {{- if not .Date.IsZero }}
-    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
-    {{- end }}
-    {{- with .Params.tags }}
-    <div class="tags">
-      {{- range . }}
-      <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag">{{ . }}</a>
+    <div class="post-meta-header">
+      {{- if not .Date.IsZero }}
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
       {{- end }}
+      {{- with .Params.tags }}
+        {{- range . }}
+        <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag">{{ . }}</a>
+        {{- end }}
+      {{- end }}
+      <a href="index.md" class="source-link">[md]</a>
     </div>
-    {{- end }}
-    <a href="index.md" class="source-link">[md]</a>
   </header>
   <div class="content">
     {{ .Content }}

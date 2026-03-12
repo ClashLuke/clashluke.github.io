@@ -299,28 +299,33 @@ p.home-intro {
 
 /* Single post */
 .post header {
-  margin-bottom: 3rem;
-  padding-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   border-bottom: none;
   text-align: center;
 }
 .post header::after {
   content: "§";
   display: block;
-  margin-top: 2rem;
+  margin-top: 1rem;
   color: var(--rule);
   font-size: 0.875rem;
   font-family: Georgia, serif;
 }
-.post header time {
-  display: block;
+.post-meta-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-top: 0.625rem;
+}
+.post header time {
   color: var(--ink-faded);
   font-size: 0.85rem;
   font-style: italic;
   letter-spacing: 0.05em;
 }
-.post .content { margin-top: 2.5rem; }
+.post .content { margin-top: 0; }
 
 .post .content h2 {
   padding-top: 2rem;
@@ -440,8 +445,8 @@ em {
 
 /* Footer */
 .site-footer {
-  margin-top: 4.5rem;
-  padding-top: 2.5rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--rule-light);
   color: var(--ink-faded);
   font-size: 0.8rem;
@@ -555,8 +560,7 @@ em {
     padding-bottom: 2rem;
   }
   .post header {
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
+    margin-bottom: 1rem;
   }
   pre {
     padding: 1.25rem 1.5rem;
@@ -627,18 +631,17 @@ em {
     font-size: 0.85rem;
   }
   .post header {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 0.75rem;
   }
   .post .content {
-    margin-top: 2rem;
+    margin-top: 0;
   }
   p {
     margin-bottom: 1.25rem;
   }
   .post header::after {
     font-size: 0.625rem;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
   }
   ul, ol {
     padding-left: 1.25rem;
@@ -740,9 +743,7 @@ a sup { color: inherit; }
 }
 
 .post header .source-link {
-  display: block;
-  margin: 0.75rem auto 0;
-  text-align: center;
+  margin-left: 0;
 }
 
 /* MathJax styling */
