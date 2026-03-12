@@ -24,7 +24,7 @@ Over $n$ steps, biased errors grow as $O(n)$, but unbiased errors grow as $O(\sq
 The obvious fix for rounding error is more precision. [Error correction](https://arxiv.org/abs/2602.23349) stores a
 bf16 value and an int8 residual, doubling the effective precision for 50% more storage. Training the same MLP with
 [HeavyBall](https://github.com/HomebrewML/HeavyBall)'s AdamW, we can test both axes independently, varying only the
-rounding and storage.
+rounding and storage of the optimizer state, with parameters and computation in fp32.
 
 ![precision_toy.png](precision_toy.png)
 
