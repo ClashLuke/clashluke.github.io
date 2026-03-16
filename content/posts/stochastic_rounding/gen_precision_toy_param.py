@@ -91,7 +91,7 @@ CONFIGS = [
     ("FP32 (4+4+4)", lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, storage_dtype="float32"),
      "#2d2d2d", dict(linewidth=2.2, linestyle="-", alpha=0.85), False),
     ("BF16 + SR (2+2+2)", lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, storage_dtype="bfloat16"),
-     "#e6550d", dict(linewidth=2.2, linestyle="-"), False),
+     "#b07cc6", dict(linewidth=2.2, linestyle="-"), False),
     ("ECC Param + SR (3+2+2)",
      lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, storage_dtype="bfloat16", param_ecc="bf16+8"),
      "#2ca02c", dict(linewidth=2.0, linestyle=(0, (4, 2))), False),

@@ -34,8 +34,12 @@ parameters and optimizer state.
 ![precision_toy_param.png](precision_toy_param.png)
 
 BF16 + SR (6 bytes for parameters, first moment, and second moment) nearly matches the fp32 baseline (12 bytes), and
-both ECC variants close most of the gap to fp32. Plain BF16 + RNE (8 bytes) is worst: biased rounding in the optimizer state accumulates error, and loss plateaus an
+both ECC variants close most of the gap to fp32. Plain BF16 + RNE (8 bytes) is worst: biased rounding in the optimizer
+state accumulates error, and loss plateaus an
 order of magnitude above the baseline despite fp32 parameters.
+
+BF16 + SR adds no overhead, as stochastic rounding is fused into the optimizer kernel. ECC adds one byte of read/write
+per parameter.
 
 Substituting SR for ECC on the optimizer state reaches similar losses at 7 bytes per parameter versus 9. The only
 difference is how the state is stored: ECC's residual byte with deterministic rounding versus plain bf16 with unbiased
