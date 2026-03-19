@@ -14,11 +14,11 @@ heavyball.utils.set_torch()
 warnings.filterwarnings("ignore", message="Learning rate changed")
 
 DEPTH, WIDTH, IN_DIM = 4, 32, 8
-STEPS, LR, BETAS, EPS = 50000, 3e-3, (0.9, 0.999), 1e-8
-N_TRAIN = 1024
-N_TEST = 4096
-N_TRIALS = 3
-LOG_EVERY = 100
+STEPS, LR, BETAS, EPS = 200_000, 1e-4, (0.9, 0.999), 1e-8
+N_TRAIN = 256
+N_TEST = 1024
+N_TRIALS = 1
+LOG_EVERY = 1000
 
 
 def log(msg):
@@ -91,15 +91,15 @@ CONFIGS = [
     ("FP32 (4+4+4)", lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, storage_dtype="float32"),
      "#2d2d2d", dict(linewidth=2.2, linestyle="-", alpha=0.85), False),
     ("BF16 + SR (2+2+2)", lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, storage_dtype="bfloat16"),
-     "#b07cc6", dict(linewidth=2.2, linestyle="-"), False),
+     "#b07cc6", dict(linewidth=2.2, linestyle="-"), True),
     ("ECC Param + SR (3+2+2)",
      lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, storage_dtype="bfloat16", param_ecc="bf16+8"),
      "#2ca02c", dict(linewidth=2.0, linestyle=(0, (4, 2))), False),
     ("ECC All (3+3+3)",
      lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, ecc="bf16+8", param_ecc="bf16+8"),
      "#3182bd", dict(linewidth=2.0, linestyle=(0, (6, 2))), False),
-    ("BF16 + RNE (4+2+2)", lambda p: NaiveAdamW(p, lr=LR, betas=BETAS, eps=EPS, state_dtype=torch.bfloat16),
-     "#d62728", dict(linewidth=2.2, linestyle="-"), False),
+    ("BF16 + RNE (2+2+2)", lambda p: NaiveAdamW(p, lr=LR, betas=BETAS, eps=EPS, state_dtype=torch.bfloat16),
+     "#d62728", dict(linewidth=2.2, linestyle="-"), True),
 ]
 
 
@@ -109,14 +109,17 @@ def make_data(teacher, n, seed):
     return x, teacher(x)
 
 
-def train(name, make_opt, init_state, train_x, train_y, test_x, test_y):
+def train(name, make_opt, init_state, train_x, train_y, test_x, test_y, bf16_params=False):
     model = MLP().cuda()
     model.load_state_dict(init_state)
+    if bf16_params:
+        model.bfloat16()
     model = torch.compile(model, mode="max-autotune")
     opt = make_opt(model.parameters())
     t0 = time.time()
 
     log_data = []
+    train_y, test_y = torch.ones_like(train_y), torch.ones_like(test_y)
 
     @torch.compile(mode='max-autotune')
     def closure(model, train_x, train_y):
@@ -205,8 +208,8 @@ def main():
         torch.manual_seed(42 + trial)
         init = MLP().cuda().state_dict()
         log(f"\n--- Trial {trial + 1}/{N_TRIALS} ({time.time() - t_start:.0f}s elapsed) ---")
-        for name, make_opt, _, _, _ in CONFIGS:
-            result = train(name, make_opt, init, train_x, train_y, test_x, test_y)
+        for name, make_opt, _, _, bf16 in CONFIGS:
+            result = train(name, make_opt, init, train_x, train_y, test_x, test_y, bf16_params=bf16)
             all_results[name].append([mse for _, mse in result])
 
     steps = [s for s, _ in result]
