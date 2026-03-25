@@ -1,4 +1,5 @@
 import math
+import sys
 import time
 import warnings
 
@@ -9,6 +10,10 @@ import matplotlib.ticker as ticker
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from plot_theme import savefig
 
 heavyball.utils.set_torch()
 warnings.filterwarnings("ignore", message="Learning rate changed")
@@ -89,17 +94,17 @@ class NaiveAdamW:
 
 CONFIGS = [
     ("FP32 (4+4+4)", lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, storage_dtype="float32"),
-     "#2d2d2d", dict(linewidth=2.2, linestyle="-", alpha=0.85), False),
+     "gray", dict(linewidth=2.2, linestyle="-", alpha=0.85), False),
     ("BF16 + SR (2+2+2)", lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, storage_dtype="bfloat16"),
-     "#b07cc6", dict(linewidth=2.2, linestyle="-"), True),
+     "purple", dict(linewidth=2.2, linestyle="-"), True),
     ("ECC Param + SR (3+2+2)",
      lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, storage_dtype="bfloat16", param_ecc="bf16+8"),
-     "#2ca02c", dict(linewidth=2.0, linestyle=(0, (4, 2))), False),
+     "green", dict(linewidth=2.0, linestyle=(0, (4, 2))), False),
     ("ECC All (3+3+3)",
      lambda p: heavyball.ForeachAdamW(p, lr=LR, betas=BETAS, eps=EPS, ecc="bf16+8", param_ecc="bf16+8"),
-     "#3182bd", dict(linewidth=2.0, linestyle=(0, (6, 2))), False),
+     "blue", dict(linewidth=2.0, linestyle=(0, (6, 2))), False),
     ("BF16 + RNE (2+2+2)", lambda p: NaiveAdamW(p, lr=LR, betas=BETAS, eps=EPS, state_dtype=torch.bfloat16),
-     "#d62728", dict(linewidth=2.2, linestyle="-"), True),
+     "red", dict(linewidth=2.2, linestyle="-"), True),
 ]
 
 
@@ -159,37 +164,33 @@ def ema(x, alpha=0.12):
 
 
 def plot(steps, all_results):
-    matplotlib.rcParams.update({"font.family": "sans-serif", "axes.spines.top": False, "axes.spines.right": False, })
 
-    fig, ax = plt.subplots(figsize=(7, 4.2))
+    def make_plot(t):
+        fig, ax = plt.subplots(figsize=(7, 4.2))
+        for name, _, color_attr, style, _ in CONFIGS:
+            color = getattr(t, color_attr)
+            arr = torch.tensor(all_results[name])
+            log_arr = arr.log10()
+            median = ema(log_arr.median(0).values)
+            p25 = ema(log_arr.quantile(0.25, dim=0))
+            p75 = ema(log_arr.quantile(0.75, dim=0))
+            ax.plot(steps, (10 ** median).tolist(), color=color, label=name, **style)
+            ax.fill_between(steps, (10 ** p25).tolist(), (10 ** p75).tolist(), color=color, alpha=0.12, linewidth=0)
+        ax.set_yscale("log")
+        ax.set_xlabel("Step", fontsize=11, labelpad=6)
+        ax.set_ylabel("Test MSE", fontsize=11, labelpad=6)
+        ax.set_xlim(0, STEPS)
+        ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f"{int(x / 1000)}k" if x > 0 else "0"))
+        ax.grid(True, which="major", alpha=0.25, linewidth=0.6)
+        ax.grid(True, which="minor", alpha=0.08, linewidth=0.4)
+        ax.tick_params(labelsize=9.5)
+        leg = ax.legend(fontsize=8.5, loc="upper right", framealpha=t.legend_alpha, edgecolor=t.legend_edge,
+                        borderpad=0.6, labelspacing=0.45, handlelength=2.5, fancybox=False)
+        leg.get_frame().set_linewidth(0.5)
+        fig.tight_layout(pad=1.0)
+        return fig
 
-    for name, _, color, style, _ in CONFIGS:
-        arr = torch.tensor(all_results[name])
-        log_arr = arr.log10()
-        median = ema(log_arr.median(0).values)
-        p25 = ema(log_arr.quantile(0.25, dim=0))
-        p75 = ema(log_arr.quantile(0.75, dim=0))
-        ax.plot(steps, (10 ** median).tolist(), color=color, label=name, **style)
-        ax.fill_between(steps, (10 ** p25).tolist(), (10 ** p75).tolist(), color=color, alpha=0.12, linewidth=0)
-
-    ax.set_yscale("log")
-    ax.set_xlabel("Step", fontsize=11, labelpad=6)
-    ax.set_ylabel("Test MSE", fontsize=11, labelpad=6)
-    ax.set_xlim(0, STEPS)
-
-    ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, _: f"{int(x / 1000)}k" if x > 0 else "0"))
-
-    ax.grid(True, which="major", alpha=0.25, linewidth=0.6)
-    ax.grid(True, which="minor", alpha=0.08, linewidth=0.4)
-    ax.tick_params(labelsize=9.5)
-
-    leg = ax.legend(fontsize=8.5, loc="upper right", framealpha=0.92, edgecolor="#cccccc", borderpad=0.6,
-                    labelspacing=0.45, handlelength=2.5)
-    leg.get_frame().set_linewidth(0.5)
-
-    fig.tight_layout(pad=1.0)
-    fig.savefig("precision_toy_param.png", dpi=200, bbox_inches="tight")
-    log("Saved precision_toy_param.png")
+    savefig(make_plot, "precision_toy_param.png")
 
 
 def main():
