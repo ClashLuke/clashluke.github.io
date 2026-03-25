@@ -1,7 +1,7 @@
 +++
 title = "Steer Before You Shrink"
-date = 2026-03-08
-draft = true
+date = 2026-03-25
+draft = false
 description = "Training methods that steer optimization scale. Methods that restrict the network don't."
 tags = ["ml", "research"]
 +++

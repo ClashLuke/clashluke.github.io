@@ -1,0 +1,15 @@
+{{- $src := .Destination -}}
+{{- $alt := .Text -}}
+{{- $ext := path.Ext $src -}}
+{{- $darkSrc := printf "%s_dark%s" (strings.TrimSuffix $ext $src) $ext -}}
+{{- $darkRes := .Page.Resources.GetMatch $darkSrc -}}
+{{- if $darkRes -}}
+<picture>
+  <source srcset="{{ $darkRes.RelPermalink }}" media="(prefers-color-scheme: dark)">
+  {{- $lightRes := .Page.Resources.GetMatch $src -}}
+  <img src="{{ with $lightRes }}{{ .RelPermalink }}{{ else }}{{ $src }}{{ end }}" alt="{{ $alt }}">
+</picture>
+{{- else -}}
+{{- $lightRes := .Page.Resources.GetMatch $src -}}
+<img src="{{ with $lightRes }}{{ .RelPermalink }}{{ else }}{{ $src }}{{ end }}" alt="{{ $alt }}">
+{{- end -}}
